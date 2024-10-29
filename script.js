@@ -35,7 +35,24 @@ function predictNextChoice() {
         return;
     }
 
-    const lastChoice = userChoices[userChoices.length - 1];
-    const prediction = lastChoice === 'rock' ? 'paper' : lastChoice === 'paper' ? 'scissors' : 'rock';
-    document.getElementById('prediction').innerText = `Based on your last choice, I predict you will choose: ${prediction}`;
+    // Count occurrences of each choice
+    const choiceCounts = { rock: 0, paper: 0, scissors: 0 };
+    
+    userChoices.forEach(choice => {
+        choiceCounts[choice]++;
+    });
+
+    // Determine the most frequent choice
+    let predictedChoice;
+    if (choiceCounts.rock > choiceCounts.paper && choiceCounts.rock > choiceCounts.scissors) {
+        predictedChoice = 'rock'; // User is likely to play rock
+    } else if (choiceCounts.paper > choiceCounts.rock && choiceCounts.paper > choiceCounts.scissors) {
+        predictedChoice = 'paper'; // User is likely to play paper
+    } else {
+        predictedChoice = 'scissors'; // User is likely to play scissors
+    }
+
+    // Predict the computer's counter choice
+    const prediction = predictedChoice === 'rock' ? 'paper' : predictedChoice === 'paper' ? 'scissors' : 'rock';
+    document.getElementById('prediction').innerText = `Based on your patterns, I predict you will choose: ${predictedChoice}. I will counter with: ${prediction}.`;
 }
